@@ -37,6 +37,7 @@ if [[ "$HVGP_AUTO_UPDATE" == "1" ]]; then
 fi
 ln -sfn ${CKPTS_HOME} "$HVGP_HOME/ckpts"
 ln -sfn ${LORA_HOME} "$HVGP_HOME/lora"
+ln -sfn ${OUTPUT_HOME} "$HVGP_HOME/gradio_outputs"
 
 # Install dependencies
 #CONDA_HOME="${CACHE_HOME}/conda"
@@ -72,7 +73,6 @@ huggingface-cli download tencent/HunyuanVideo --local-dir $CKPTS_HOME
 
 # Build command line argds and start the service
 HVGP_ARGS=" \
-    --save-path ${OUTPUT_HOME} \
     --server-name 0.0.0.0 \
     --server-port 7860"
 
