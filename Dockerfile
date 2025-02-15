@@ -25,15 +25,6 @@ RUN apt update && apt install -y \
     python3 -m pip install --upgrade pip && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Miniconda
-#RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
-#    bash /tmp/miniconda.sh -b -p /opt/conda && \
-#    rm /tmp/miniconda.sh && \
-#    /opt/conda/bin/conda init && \
-#    /opt/conda/bin/conda update -y conda && \
-#    ln -s /opt/conda/bin/conda /usr/local/bin/conda && \
-#    ln -s /opt/conda/bin/activate /usr/local/bin/activate
-
 # Package the startup script and the latest version of the HVGP repositories
 WORKDIR /app
 
@@ -47,13 +38,7 @@ COPY startup.sh startup.sh
 EXPOSE 7860
 
 # Parameters for the startup script
-#ENV HVGP_PROFILE=1
-#ENV HVGP_CUDA_IDX=0
-#ENV HVGP_ENABLE_ICL=0
-#ENV HVGP_TRANSFORMER_PATCH=0
 ENV HVGP_AUTO_UPDATE=0
-#ENV HVGP_SERVER_USER=""
-#ENV HVGP_SERVER_PASSWORD=""
 
 # Default command to run the container
 CMD ["bash", "./startup.sh"]
