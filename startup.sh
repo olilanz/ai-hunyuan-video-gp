@@ -39,7 +39,8 @@ ln -sfn "${OUTPUT_HOME}" "$HVGP_HOME/gradio_outputs"
 VENV_HOME="${CACHE_HOME}/venv"
 echo "📦 Setting up Python virtual environment..."
 if [ ! -d "$VENV_HOME" ]; then
-    python3 -m venv "$VENV_HOME"
+    # Create virtual environment, but re-use globally installed packages if available (e.g. via base container)
+    python3 -m venv "$VENV_HOME" --system-site-packages
 fi
 source "${VENV_HOME}/bin/activate"
 
