@@ -43,7 +43,7 @@ docker run -it --rm --name ai-hunyuan-video-gp \
   --shm-size 24g --gpus all \
   -p 7860:7860 \
   -v /mnt/cache/appdata/ai-hunyuan-video-gp:/workspace \
-  -e YUEGP_AUTO_UPDATE=1 \
+  -e HVGP_AUTO_UPDATE=1 \
   --network host \
   olilanz/ai-hunyuan-video-gp
 ```
