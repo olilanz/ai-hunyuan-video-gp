@@ -49,8 +49,7 @@ pip install --no-cache-dir --upgrade pip wheel
 
 # Install required dependencies
 echo "📦 Installing Python dependencies..."
-pip install --no-cache-dir -r "$HVGP_HOME/requirements.txt"
-pip install --no-cache-dir \
+pip -q install --no-cache-dir -r "$HVGP_HOME/requirements.txt" \
     flash-attn==2.7.2.post1 \
     sageattention==1.0.6 \
     xformers==0.0.29 \
@@ -68,5 +67,6 @@ fi
 HVGP_ARGS="--server-name 0.0.0.0 --server-port 7860"
 
 echo "🚀 Starting HVGP service..."
+cd "$HVGP_HOME"
 python3 -u gradio_server.py ${HVGP_ARGS} 2>&1 | tee "${CACHE_HOME}/output.log"
 echo "❌ The HVGP service has terminated."

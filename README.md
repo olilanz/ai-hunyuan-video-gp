@@ -2,13 +2,13 @@
 
 Containerised version of the Hunyuan Video generator. It is based on the HunyuanVideo project, with deepmeepbeep's optimizations for the GPU-poor. It lets you run a quantized version of the full model on your smaller GPU, e.g. with 12GB of VRAM or even less.
 
-Currently, only NVIDIA CPU's are supported, as the code relies on CUDA for the processing. 
+Tested on RTX 3060 12GB, RTX 3090 TI, L40 and H100. On log VRAM cards, it may still work. Though, there will be limitations to video video quality and inference speed. Currently, only NVIDIA CPU's are supported, as the code relies on CUDA for the processing. 
 
-The container is contains all dependencies, i.e. batteries included. Though, during start-up it will acquire the latest model and code from [deepmeepbeep's repo](https://github.com/deepbeepmeep/HunyuanVideoGP) and the latest tencent/HunyuanVideo model from [Huggingface](https://huggingface.co/tencent/HunyuanVideo). 
+During first start-up the container will acquire the latest model and code from [deepmeepbeep's repo](https://github.com/deepbeepmeep/HunyuanVideoGP) and the latest tencent/HunyuanVideo model from [Huggingface](https://huggingface.co/tencent/HunyuanVideo).
 
 ## Disk size and startup time
 
-The container consumes considerable disk space for storage of the AI models. On my setup I observe 7GB for the docker image itself, plus 15GB for cached data. Building the cache will happen the first time when you start the container. That can easily take 20 minutes or more. After that any restart should be faster.
+The container requires considerable disk space for storage of the AI models. On my setup I observe 7GB for the docker image itself, plus 15GB for cached data. Building the cache will happen the first time when you start the container. That can easily take 20 minutes or more. After that any restart should be faster.
 
 It may be advisable to store the cache outside of the conatiner, e.g. by mounting a volume to /workspace.
 
@@ -39,12 +39,11 @@ docker build -t olilanz/ai-hunyuan-video-gp .
 On my setup I am using the following parameters: 
 
 ```bash
-docker run -it --rm --name ai-hunyuan-video-gp \
-  --shm-size 24g --gpus all \
-  -p 7860:7860 \
-  -v /mnt/cache/appdata/ai-hunyuan-video-gp:/workspace \
+docker run -it --rm --name ai-hunyuan-video-gp-2 \
+  --shm-size 24g --gpus '"device=0"' \
+  -p 7861:7860 \
+  -v /mnt/cache/appdata/ai-hunyuan-video-gp-2:/workspace \
   -e HVGP_AUTO_UPDATE=1 \
-  --network host \
   olilanz/ai-hunyuan-video-gp
 ```
 Note that you need to have an NVIDIA GPU installed, including all dependencies for Docker.
