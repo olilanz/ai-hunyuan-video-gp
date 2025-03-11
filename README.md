@@ -1,8 +1,8 @@
 # HunyuanVideoGP: Large Video Generation for the GPU Poor
 
-Containerised version of the Hunyuan Video generator. It is based on the HunyuanVideo project, with deepmeepbeep's optimizations for the GPU-poor. It lets you run a quantized version of the full model on your smaller GPU, e.g. with 12GB of VRAM or even less.
+Containerized version of the Hunyuan Video generator. It is based on the HunyuanVideo project, with deepmeepbeep's optimizations for the GPU-poor. It lets you run a quantized version on your smaller GPU, e.g. with 12GB of VRAM or even less.
 
-Tested on RTX 3060 12GB, RTX 3090 TI, L40 and H100. On log VRAM cards, it may still work. Though, there will be limitations to video video quality and inference speed. Currently, only NVIDIA CPU's are supported, as the code relies on CUDA for the processing. 
+Tested on RTX 3060 12GB, RTX 3090 TI, L40 and H100. On low VRAM cards, it may still work. Though, there will be limitations to video quality and inference speed. Currently, only NVIDIA CPU's are supported, as the code relies on CUDA for the processing. 
 
 During first start-up the container will acquire the latest model and code from [deepmeepbeep's repo](https://github.com/deepbeepmeep/HunyuanVideoGP) and the latest tencent/HunyuanVideo model from [Huggingface](https://huggingface.co/tencent/HunyuanVideo).
 
@@ -14,11 +14,11 @@ It may be advisable to store the cache outside of the conatiner, e.g. by mountin
 
 ## Variables
 
-YUEGP_AUTO_UPDATE: Automatically updates the models and inference scripts to the latest verion upon container start-up (default: 0).
+HVGP_AUTO_UPDATE: Automatically updates the models and inference scripts to the latest version upon container start-up (default: 0).
  - 0: Don't update automatically. Use the scripts that are bundled.
  - 1: Update and use the latest features / models. But also accept that this may being breaking changes.
 
-This conatiner does not provide much confguration, as many other configuration parameters can be changed through the web interface.
+This container does not provide much configuration, as many other configuration parameters can be changed through the web interface.
 
 ### Fixing caching issues
 
@@ -39,10 +39,10 @@ docker build -t olilanz/ai-hunyuan-video-gp .
 On my setup I am using the following parameters: 
 
 ```bash
-docker run -it --rm --name ai-hunyuan-video-gp-2 \
-  --shm-size 24g --gpus '"device=0"' \
+docker run -it --rm --name ai-hunyuan-video-gp \
+  --shm-size 24g --gpus all \
   -p 7861:7860 \
-  -v /mnt/cache/appdata/ai-hunyuan-video-gp-2:/workspace \
+  -v /mnt/cache/appdata/ai-hunyuan-video-gp:/workspace \
   -e HVGP_AUTO_UPDATE=1 \
   olilanz/ai-hunyuan-video-gp
 ```
@@ -52,7 +52,7 @@ Note that you need to have an NVIDIA GPU installed, including all dependencies f
 
 I am running on a computer with an AMD Ryzen 7 3700X, 128GB Ram, an RTX 3090 TI with 24GB VRAM. CPU and Ram are plentiful. It runs stable in that configuration. The web UI handles out-of-memory errors gracefully. In case this happens, you can easily tweak the settings to balance the quality/speed/VRAM-requirements.
 
-A video for 5 seconds in 960x544 (16:9, 540p) takes me about 15 minutes to render - with 40 infere steps and othere high quiality settings. 
+A video for 5 seconds in 960x544 (16:9, 540p) takes me about 15 minutes to render - with 40 inference steps and other high quality settings. 
 
 ## Resources
 * For the GPU-Poor: https://github.com/deepbeepmeep/HunyuanVideoGP
